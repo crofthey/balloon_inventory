@@ -71,26 +71,56 @@ router.get('/history', async (req, res) => {
   }
 });
 
-// Update item quantity
-router.put('/update-quantity/:id', async (req, res) => {
+// New route for updating item quantity
+router.put('/update-qty/:id', async (req, res) => {
   try {
-    console.log('PUT request to /api/items/update-quantity with data:', req.body);
-    const { id } = req.params;
     const { qty } = req.body;
-
-    const item = await Item.findByPk(id);
+    const item = await Item.findByPk(req.params.id);
     if (item) {
       item.qty = qty;
       await item.save();
-      console.log(`Updated item ${id} with new quantity: ${qty}`);
       res.json(item);
     } else {
-      console.log(`Item with id ${id} not found`);
       res.status(404).json({ error: 'Item not found' });
     }
   } catch (error) {
     console.error('Error updating item quantity:', error);
     res.status(500).json({ error: 'Failed to update item quantity' });
+  }
+});
+
+// New route for updating item cost
+router.put('/update-cost/:id', async (req, res) => {
+  try {
+    const { unit_cost } = req.body;
+    const item = await Item.findByPk(req.params.id);
+    if (item) {
+      item.unit_cost = unit_cost;
+      await item.save();
+      res.json(item);
+    } else {
+      res.status(404).json({ error: 'Item not found' });
+    }
+  } catch (error) {
+    console.error('Error updating item cost:', error);
+    res.status(500).json({ error: 'Failed to update item cost' });
+  }
+});
+
+// New route for soft deleting an item
+router.delete('/delete/:id', async (req, res) => {
+  try {
+    const item = await Item.findByPk(req.params.id);
+    if (item) {
+      item.active = false;
+      await item.save();
+      res.json({ success: true });
+    } else {
+      res.status(404).json({ error: 'Item not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting item:', error);
+    res.status(500).json({ error: 'Failed to delete item' });
   }
 });
 

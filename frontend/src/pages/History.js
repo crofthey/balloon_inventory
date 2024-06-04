@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllocations } from '../api';
-import './History.css';  // Import the CSS file
+import '../App.css';  // Import the CSS file
 
 const History = () => {
   const [allocations, setAllocations] = useState([]);

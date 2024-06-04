@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getItems, submitItemsUsage } from '../api';
-import './UseStock.css';  // Import the CSS file
+import '../App';  // Import the CSS file
 
 const UseStock = () => {
   const [items, setItems] = useState([]);

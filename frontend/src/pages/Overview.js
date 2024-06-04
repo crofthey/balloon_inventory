@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getItems, updateItemQuantity } from '../api';
-import './Overview.css';  // Import the CSS file
+import { getItems, updateItemQuantity, updateItemCost, deleteItem } from '../api';
+import '../App.css';  // Import the CSS file
 
 const Overview = () => {
   const [items, setItems] = useState([]);
@@ -8,6 +8,8 @@ const Overview = () => {
   const [filteredItems, setFilteredItems] = useState([]);
   const [editingItemId, setEditingItemId] = useState(null);
   const [newQty, setNewQty] = useState(0);
+  const [newCost, setNewCost] = useState(0);
+  const [editType, setEditType] = useState(''); // 'quantity' or 'cost'
 
   useEffect(() => {
     getItems().then(response => {
@@ -29,18 +31,40 @@ const Overview = () => {
     );
   }, [searchQuery, items]);
 
-  const handleEditClick = (id, currentQty) => {
+  const handleEditClick = (id, currentQty, currentCost, type) => {
     setEditingItemId(id);
-    setNewQty(currentQty);
+    setEditType(type);
+    if (type === 'quantity') {
+      setNewQty(currentQty);
+    } else if (type === 'cost') {
+      setNewCost(currentCost);
+    }
   };
 
   const handleSaveClick = async (id) => {
     try {
-      const updatedItem = await updateItemQuantity(id, newQty);
-      setItems(items.map(item => item.id === id ? updatedItem.data : item));
+      if (editType === 'quantity') {
+        const updatedItem = await updateItemQuantity(id, newQty);
+        setItems(items.map(item => item.id === id ? updatedItem.data : item));
+      } else if (editType === 'cost') {
+        const updatedItem = await updateItemCost(id, newCost);
+        setItems(items.map(item => item.id === id ? updatedItem.data : item));
+      }
       setEditingItemId(null);
+      setEditType('');
     } catch (error) {
-      console.error('Error updating item quantity:', error);
+      console.error(`Error updating item ${editType}:`, error);
+    }
+  };
+
+  const handleDeleteItem = async (id) => {
+    if (window.confirm('Are you sure you want to delete this item? This action cannot be reversed.')) {
+      try {
+        await deleteItem(id);
+        setItems(items.filter(item => item.id !== id));
+      } catch (error) {
+        console.error('Error deleting item:', error);
+      }
     }
   };
 
@@ -60,7 +84,7 @@ const Overview = () => {
             <tr>
               <th>Name</th>
               <th>Manufacturer</th>
-              <th>Color</th>
+              <th>Colour</th>
               <th>Quantity</th>
               <th>Unit Cost</th>
               <th>Actions</th>
@@ -73,7 +97,7 @@ const Overview = () => {
                 <td>{item.manufacturer}</td>
                 <td>{item.color}</td>
                 <td>
-                  {editingItemId === item.id ? (
+                  {editingItemId === item.id && editType === 'quantity' ? (
                     <input
                       type="number"
                       value={newQty}
@@ -83,12 +107,26 @@ const Overview = () => {
                     item.qty
                   )}
                 </td>
-                <td>{item.unit_cost}</td>
+                <td>
+                  {editingItemId === item.id && editType === 'cost' ? (
+                    <input
+                      type="number"
+                      value={newCost}
+                      onChange={(e) => setNewCost(e.target.value)}
+                    />
+                  ) : (
+                    item.unit_cost
+                  )}
+                </td>
                 <td>
                   {editingItemId === item.id ? (
                     <button onClick={() => handleSaveClick(item.id)}>Save</button>
                   ) : (
-                    <button onClick={() => handleEditClick(item.id, item.qty)}>Edit</button>
+                    <>
+                      <button onClick={() => handleEditClick(item.id, item.qty, item.unit_cost, 'quantity')}>Edit Qty</button>
+                      <button onClick={() => handleEditClick(item.id, item.qty, item.unit_cost, 'cost')}>Update Cost</button>
+                      <button onClick={() => handleDeleteItem(item.id)}>Delete Item</button>
+                    </>
                   )}
                 </td>
               </tr>

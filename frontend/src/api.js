@@ -21,4 +21,6 @@ export const getItems = () => api.get('/');
 export const addItem = (item) => api.post('/add', item);
 export const submitItemsUsage = (name, description, items) => api.post('/use', { name, description, items });
 export const getAllocations = () => api.get('/history');
-export const updateItemQuantity = (id, qty) => api.put(`/update-quantity/${id}`, { qty });
+export const updateItemQuantity = (id, qty) => api.put(`/update-qty/${id}`, { qty });
+export const updateItemCost = (id, unit_cost) => api.put(`/update-cost/${id}`, { unit_cost });
+export const deleteItem = (id) => api.delete(`/delete/${id}`);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { addItem } from '../api';
-import './AddStock.css';  // Import the CSS file
+import '../App.css';  // Import the CSS file
 
 const AddStock = () => {
   const [formData, setFormData] = useState({
@@ -61,8 +61,8 @@ const AddStock = () => {
           <input name="manufacturer" value={formData.manufacturer} onChange={handleChange} placeholder="Manufacturer" />
         </label>
         <label>
-          Color:
-          <input name="color" value={formData.color} onChange={handleChange} placeholder="Color" />
+          Colour:
+          <input name="color" value={formData.color} onChange={handleChange} placeholder="Colour" />
         </label>
         <label>
           Quantity:
