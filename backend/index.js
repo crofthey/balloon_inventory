@@ -1,12 +1,18 @@
 // index.js
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const sequelize = require('./config/database');
 const itemRoutes = require('./routes/item');
+const quoteRoutes = require('./routes/quote');
 const { StockAllocation } = require('./models/StockAllocation');
-require('dotenv').config();
 
-const { sequelize } = require('./models/Item');
+
+
+
+//const { sequelize } = require('./models/Item');
 
 sequelize.authenticate()
   .then(() => {
@@ -27,6 +33,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/items', itemRoutes);
+app.use('/api/quotes', quoteRoutes);
 
 const PORT = process.env.PORT || 5000;
 

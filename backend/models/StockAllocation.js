@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('./Item');
+const sequelize = require('../config/database');
 
 const StockAllocation = sequelize.define('StockAllocation', {
   name: {

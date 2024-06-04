@@ -40,10 +40,12 @@
 
 /* Navbar Styles */
 .navbar {
-  background-color: #333;
+  background-color: #faf2e6;
   overflow: hidden;
-  color: white;
+  color: black;
   font-family: Arial, sans-serif;
+  position: relative;
+  z-index: 1000; 
 }
 
 .navbar-logo img {
@@ -61,10 +63,11 @@
 
 .navbar-links li {
   margin-right: 20px;
+  position: relative;
 }
 
 .navbar-links a {
-  color: white;
+  color: black;
   text-decoration: none;
 }
 
@@ -76,10 +79,28 @@
 .dropdown-content {
   display: none;
   position: absolute;
+  background-color: #faf2e6;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content, .dropdown-content2 {
+  display: none;
+  position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+}
+
+.dropdown-content a, .dropdown-content2 a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  background-color: #faf2e6;
+  display: block;
+  text-align: left;
 }
 
 .dropdown:hover .dropdown-content {
@@ -283,21 +304,210 @@ button {
 .history-quotes-container th {
   background-color: #f2f2f2;
 }
-
-/* Quotes Styles */
-.quotes-container {
+/*quote form*/ 
+.quote-form-container {
+  max-width: 600px;
+  margin: 0 auto;
   padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
 }
 
-.quotes-container form {
+.quote-form-container h1 {
+  text-align: center;
+}
+
+.quote-form-container form {
   display: flex;
   flex-direction: column;
 }
 
-.quotes-container .item {
+.quote-form-container label {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.quote-form-container input,
+.quote-form-container textarea {
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.quote-form-container button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.quote-form-container button:hover {
+  background-color: #218838;
+}
+
+.message {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.quote-summary {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.history-quotes-container {
+  padding: 20px;
+}
+
+.history-quotes-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-quotes-container th, .history-quotes-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.history-quotes-container th {
+  background-color: #f2f2f2;
+}
+
+.search-input {
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+/* Container styling */
+.view-quotes-container {
+  padding: 20px;
+}
+
+.view-quotes-container h1 {
+  text-align: center;
+}
+
+/* Search input styling */
+.search-input {
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Table styling */
+.view-quotes-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.view-quotes-table th,
+.view-quotes-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.view-quotes-table th {
+  background-color: #f2f2f2;
+}
+
+/* Button styling */
+.view-quotes-button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 5px;
+}
+
+.view-quotes-button:hover {
+  background-color: #0056b3;
+}
+
+/* Button container */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Error message styling */
+.error-message {
+  color: #ff0000;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Add additional styles as needed */
+
+.view-quotes-container {
+  padding: 20px;
+}
+
+.view-quotes-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.view-quotes-container th, .view-quotes-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.view-quotes-container th {
+  background-color: #f2f2f2;
+}
+
+.edit-quote-form input,
+.edit-quote-form textarea {
+  display: block;
+  width: 100%;
   margin-bottom: 10px;
 }
 
-.quotes-container button {
-  align-self: flex-start;
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #218838;
 }
