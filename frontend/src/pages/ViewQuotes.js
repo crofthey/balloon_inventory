@@ -1,7 +1,13 @@
 // frontend/src/pages/ViewQuotes.js
 import React, { useEffect, useState } from 'react';
 import { getQuotes, updateQuote, convertQuoteToBooking } from '../api';
+import { format, parseISO } from 'date-fns'; // Ensure correct import
 import '../App.css';  // Create and use a CSS file for styling
+
+// Define the formatDate function
+const formatDate = (isoDate) => {
+  return format(new Date(isoDate), 'dd-MM-yyyy');
+};
 
 const ViewQuotes = () => {
   const [quotes, setQuotes] = useState([]);
@@ -20,9 +26,7 @@ const ViewQuotes = () => {
   });
 
   useEffect(() => {
-    console.log('Fetching quotes...');
     getQuotes().then(response => {
-      console.log('Quotes fetched:', response.data);
       setQuotes(response.data);
       setFilteredQuotes(response.data);
     }).catch(error => {
@@ -40,15 +44,16 @@ const ViewQuotes = () => {
   }, [searchQuery, quotes]);
 
   const handleEditClick = (quote) => {
-    console.log('Editing quote:', quote);
     setEditingQuoteId(quote.id);
-    setQuoteDetails(quote);
+    setQuoteDetails({
+      ...quote,
+      date: format(parseISO(quote.date), 'yyyy-MM-dd'), // Format for input field
+    });
   };
 
   const handleSaveClick = async (id) => {
     try {
       const updatedQuote = await updateQuote(id, quoteDetails);
-      console.log('Quote updated:', updatedQuote.data);
       setQuotes(quotes.map(quote => quote.id === id ? updatedQuote.data : quote));
       setEditingQuoteId(null);
     } catch (error) {
@@ -67,7 +72,6 @@ const ViewQuotes = () => {
         bookingDate: ''
       };
       await convertQuoteToBooking(id, bookingDetails);
-      console.log('Quote converted to booking:', id);
     } catch (error) {
       console.error('Error converting quote to booking:', error);
     }
@@ -99,7 +103,7 @@ const ViewQuotes = () => {
               <tr key={quote.id}>
                 <td>{quote.name}</td>
                 <td>{quote.description}</td>
-                <td>{quote.date}</td>
+                <td>{formatDate(quote.date)}</td> {/* Display formatted date */}
                 <td>{quote.totalCost}</td>
                 <td>
                   <button onClick={() => handleEditClick(quote)}>Edit</button>

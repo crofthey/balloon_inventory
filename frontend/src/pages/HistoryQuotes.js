@@ -1,7 +1,13 @@
 // frontend/src/pages/HistoryQuotes.js
 import React, { useEffect, useState } from 'react';
 import { getQuotes } from '../api';
+import { format } from 'date-fns'; // Import date-fns
 import '../App.css';  // Ensure you have your global CSS file
+
+// Define the formatDate function
+const formatDate = (isoDate) => {
+  return format(new Date(isoDate), 'dd-MM-yyyy');
+};
 
 const HistoryQuotes = () => {
   const [quotes, setQuotes] = useState([]);
@@ -53,7 +59,7 @@ const HistoryQuotes = () => {
               <tr key={quote.id}>
                 <td>{quote.name}</td>
                 <td>{quote.description}</td>
-                <td>{quote.date}</td>
+                <td>{formatDate(quote.date)}</td> {/* Display formatted date */}
                 <td>{quote.totalCost}</td>
                 <td>{quote.priceWithMarkup}</td>
                 <td>{quote.margin}</td>

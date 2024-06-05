@@ -41,7 +41,6 @@
 /* Navbar Styles */
 .navbar {
   background-color: #faf2e6;
-  overflow: hidden;
   color: black;
   font-family: Arial, sans-serif;
   position: relative;
@@ -74,6 +73,11 @@
 .dropdown {
   position: relative;
   display: inline-block;
+}
+
+.dropdown-menu {
+  position: relative; 
+  z-index: 5000; 
 }
 
 .dropdown-content {

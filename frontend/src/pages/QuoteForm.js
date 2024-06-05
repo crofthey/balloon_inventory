@@ -3,6 +3,7 @@ import { getItems, addQuote } from '../api';
 import '../App.css';
 
 const QuoteForm = () => {
+  const [name, setName] = useState('');
   const [items, setItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState({});
   const [laborCost, setLaborCost] = useState(0);
@@ -12,6 +13,9 @@ const QuoteForm = () => {
   const [date, setDate] = useState('');
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState('');
+  const [totalCost, setTotalCost] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [profit, setProfit] = useState(0);
 
   useEffect(() => {
     getItems().then(response => {
@@ -21,6 +25,26 @@ const QuoteForm = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const calculateTotals = () => {
+      const itemTotal = items.reduce((total, item) => {
+        const qty = selectedItems[item.id] || 0;
+        return total + (item.unit_cost * qty);
+      }, 0);
+      const laborTotal = parseFloat(laborCost);
+      const costTotal = itemTotal + laborTotal;
+      const marginAmount = isMarginPercentage ? (costTotal * (parseFloat(margin) / 100)) : parseFloat(margin);
+      const calculatedPrice = costTotal + marginAmount;
+      const calculatedProfit = calculatedPrice - costTotal;
+
+      setTotalCost(costTotal);
+      setPrice(calculatedPrice);
+      setProfit(calculatedProfit);
+    };
+
+    calculateTotals();
+  }, [items, selectedItems, laborCost, margin, isMarginPercentage]);
+
   const handleItemChange = (id, qty) => {
     setSelectedItems({
       ...selectedItems,
@@ -28,22 +52,11 @@ const QuoteForm = () => {
     });
   };
 
-  const calculateTotalPrice = () => {
-    const itemTotal = items.reduce((total, item) => {
-      const qty = selectedItems[item.id] || 0;
-      return total + (item.unit_cost * qty);
-    }, 0);
-    const laborTotal = parseFloat(laborCost);
-    const costTotal = itemTotal + laborTotal;
-    const marginAmount = isMarginPercentage ? (costTotal * (parseFloat(margin) / 100)) : parseFloat(margin);
-    return costTotal + marginAmount;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const totalPrice = calculateTotalPrice();
     const quoteReference = `QUOTE-${Date.now()}`;
     const quote = {
+      name,
       reference: quoteReference,
       description,
       items: selectedItems,
@@ -51,7 +64,9 @@ const QuoteForm = () => {
       margin,
       isMarginPercentage,
       date,
-      totalPrice
+      totalCost,
+      price,
+      profit
     };
 
     try {
@@ -73,6 +88,16 @@ const QuoteForm = () => {
         </div>
       )}
       <form onSubmit={handleSubmit}>
+        <label htmlFor="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+
         <label htmlFor="description">Description</label>
         <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
 
@@ -126,11 +151,13 @@ const QuoteForm = () => {
           Fixed Amount
         </label>
 
-        <button type="submit">Create Quote</button>
-
         <div className="quote-summary">
-          <p>Total Cost: £{calculateTotalPrice()}</p>
+          <p>Total Cost: £{totalCost.toFixed(2)}</p>
+          <p>Price: £{price.toFixed(2)}</p>
+          <p>Profit: £{profit.toFixed(2)}</p>
         </div>
+
+        <button type="submit">Create Quote</button>
       </form>
     </div>
   );
