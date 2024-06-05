@@ -117,7 +117,7 @@ const QuoteForm = () => {
           </div>
         ))}
 
-        <label htmlFor="laborCost">Labor Cost</label>
+        <label htmlFor="laborCost">Labour Cost</label>
         <input
           type="number"
           id="laborCost"

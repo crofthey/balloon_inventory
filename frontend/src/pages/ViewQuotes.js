@@ -91,20 +91,26 @@ const ViewQuotes = () => {
         <table>
           <thead>
             <tr>
+              <th>Quote id</th>
               <th>Name</th>
               <th>Description</th>
-              <th>Date</th>
+              <th>Delivery Date</th>
               <th>Total Cost</th>
+              <th>Price</th>
+              <th>Profit</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredQuotes.map(quote => (
               <tr key={quote.id}>
+                <td>{quote.id}</td>
                 <td>{quote.name}</td>
                 <td>{quote.description}</td>
                 <td>{formatDate(quote.date)}</td> {/* Display formatted date */}
                 <td>{quote.totalCost}</td>
+                <td>{quote.price}</td>
+                <td>{quote.profit}</td>
                 <td>
                   <button onClick={() => handleEditClick(quote)}>Edit</button>
                   <button onClick={() => handleConvertToBookingClick(quote.id)}>Convert to Booking</button>

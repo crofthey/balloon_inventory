@@ -1,3 +1,6 @@
+0.5 fixes
+- additional fields on the view quotes page
+
 0.4 fixes - 
 - menu styling
 - name field on quotes

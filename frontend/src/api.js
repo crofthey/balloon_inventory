@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL || 'http://192.168.0.82:5000/api/'  // Use environment variable or fallback to localhost
+  baseURL: process.env.REACT_APP_BACKEND_URL || 'http://192.168.0.85:5000/api/'  // Use environment variable or fallback to localhost
 });
 
 // Add a request interceptor for logging
