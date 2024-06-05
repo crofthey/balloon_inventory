@@ -20,7 +20,7 @@ const Navbar = () => {
             <Link to="/view-quotes">View Quotes</Link>
           </div>
         </li>
-        <li className="dropdown2">
+        <li className="dropdown">
           <Link to="#" className="dropbtn">Stock</Link>
           <div className="dropdown-content">
             <li><Link to="/add-stock">Add Stock</Link></li>

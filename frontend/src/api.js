@@ -26,5 +26,17 @@ export const updateItemCost = (id, unit_cost) => api.put(`/items/update-cost/${i
 export const deleteItem = (id) => api.delete(`/items/delete/${id}`);
 export const addQuote = (quote) => api.post('/quotes/add', quote);
 export const getQuotes = () => api.get('/quotes');
-export const updateQuote = (id, quote) => api.put(`/quotes/update/${id}`, quote);
+//export const updateQuote = (id, quote) => api.put(`/quotes/update/${quote.id}`, quote);
 export const convertQuoteToBooking = (id, bookingDetails) => api.post(`/quotes/convert-to-booking/${id}`, bookingDetails);
+
+export const updateQuote = async (quote) => {
+  console.log('Updating quote:', quote); // Debug log
+  try {
+    const response = await axios.put(`/quotes/update/${quote.id}`, quote);
+    console.log('Update response:', response); // Debug log
+    return response;
+  } catch (error) {
+    console.error('Update error:', error); // Debug log
+    throw error;
+  }
+};
